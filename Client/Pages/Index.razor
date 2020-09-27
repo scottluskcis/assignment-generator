@@ -6,14 +6,14 @@
 {
   <h1>Logged in as, @userName!</h1>
   
-  <a href="/logout" target="_blank" class="ml-md-auto">Logout</a>
+  <a href="/logout">Logout</a>
 }
 else
 {
   <p>
-    Click here to <a href="/login" target="_blank" class="ml-md-auto">Login</a>
+    Click here to <a href="/login">Login</a>
   </p>
-}
+} 
 
 @code {
     private string userName;
@@ -27,6 +27,7 @@ else
       }
       catch (Exception ex)
       {
+        userName = ex.ToString();
         Console.WriteLine(ex.ToString());
       }
     }
