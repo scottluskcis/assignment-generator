@@ -16,8 +16,8 @@ namespace Api.Auth
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            var userInfo = req.GetUserInfo();
-            return new OkObjectResult(userInfo);
+            var claimsPrincipal = req.ParseClaims();
+            return new OkObjectResult(claimsPrincipal);
         }
     }
 }
