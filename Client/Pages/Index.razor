@@ -1,7 +1,24 @@
 ﻿@page "/"
+@using BlazorApp.Shared.User
+@inject HttpClient Http
 
-<h1>Hello, world!</h1>
+<h1>Hello, @userName!</h1>
 
-Welcome to your new app.
+Welcome to the app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private string userName;
+
+    protected override async Task OnInitializedAsync() 
+    {
+      try
+      {
+        var user = await Http.GetFromJsonAsync<UserInfo>("/api/UserInfo");
+        userName = user?.Name;
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex.ToString());
+      }
+    }
+}
