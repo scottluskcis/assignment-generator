@@ -2,9 +2,18 @@
 @using BlazorApp.Shared.User
 @inject HttpClient Http
 
-<h1>Hello, @userName!</h1>
-
-Welcome to the app.
+@if(!string.IsNullOrEmpty(userName)) 
+{
+  <h1>Logged in as, @userName!</h1>
+  
+  <a href="/logout" target="_blank" class="ml-md-auto">Logout</a>
+}
+else
+{
+  <p>
+    Click here to <a href="/login" target="_blank" class="ml-md-auto">Login</a>
+  </p>
+}
 
 @code {
     private string userName;
@@ -13,8 +22,8 @@ Welcome to the app.
     {
       try
       {
-        var user = await Http.GetFromJsonAsync<UserInfo>("/api/UserInfo");
-        userName = user?.Name;
+        var user = await Http.GetFromJsonAsync<ClientPrincipal>("/.auth/me");
+        userName = user?.UserDetails;
       }
       catch (Exception ex)
       {
