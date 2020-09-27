@@ -22,7 +22,7 @@ else
     {
       try
       {
-        var user = await Http.GetFromJsonAsync<ClientPrincipal>("/.auth/me");
+        var user = await Http.GetFromJsonAsync<ClientPrincipal>(".auth/me");
         userName = user?.UserDetails;
       }
       catch (Exception ex)
