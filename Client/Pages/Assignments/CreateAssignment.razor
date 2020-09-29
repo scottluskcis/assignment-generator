@@ -1,0 +1,69 @@
+@page "/assignments/create"
+@using BlazorApp.Client.Shared.Questions
+@using BlazorApp.Shared.Model.Question
+
+<h3>Assignment (Design)</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col-1">#</th>
+            <th scope="col-3">Type</th>
+            <th scope="col-8">Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var question in Questions)
+        {
+            <tr>
+                <th scope="row">@question.Order</th>
+                <td>@question.QuestionType</td>
+                <td>@question.Text</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button @onclick="ShowModal" class="btn btn-primary">Add Question</button>
+
+<button class="btn btn-success">Save Changes</button>
+
+<NavLink class="btn btn-secondary" href="assignments/list">
+    <span aria-hidden="true"></span> Cancel
+</NavLink>
+
+
+@code {
+    [CascadingParameter] public IModalService Modal { get; set; }
+
+    private IList<IQuestion> Questions { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Questions = new List<IQuestion>();
+    }
+
+    async Task ShowModal()
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("QuestionId", "");
+        parameters.Add("QuestionCount", Questions.Count);
+
+        var questionModal = Modal.Show<EditQuestion>("Question", parameters);
+        var result = await questionModal.Result;
+        
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Modal was cancelled");
+        }
+        else
+        {
+            Console.WriteLine("Modal was closed");
+
+            if(result.Data is IQuestion question)
+            {
+                Questions.Add(question);
+            }
+        }
+    }
+}
